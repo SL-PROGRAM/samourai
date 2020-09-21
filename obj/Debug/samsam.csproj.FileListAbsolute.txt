@@ -88,3 +88,5 @@ C:\Users\sleyral2020\source\repos\Samourai\samsam\bin\fr\System.Web.WebPages.Raz
 C:\Users\sleyral2020\source\repos\Samourai\samsam\obj\Debug\samsam.csproj.CopyComplete
 C:\Users\sleyral2020\source\repos\Samourai\samsam\obj\Debug\samsam.dll
 C:\Users\sleyral2020\source\repos\Samourai\samsam\obj\Debug\samsam.pdb
+C:\Users\sleyral2020\source\repos\Samourai\samsam\obj\Debug\samsam.Migrations.Samsam.resources
+C:\Users\sleyral2020\source\repos\Samourai\samsam\obj\Debug\samsam.csproj.GenerateResource.cache
