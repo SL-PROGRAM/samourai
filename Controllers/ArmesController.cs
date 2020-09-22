@@ -98,6 +98,7 @@ namespace samsam.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Arme arme = db.Armes.Find(id);
+                      
             if (arme == null)
             {
                 return HttpNotFound();
@@ -111,6 +112,14 @@ namespace samsam.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Arme arme = db.Armes.Find(id);
+            List<Samourai> samourais = db.Samourais.ToList();
+            foreach (Samourai samourai in samourais.Where(x => x.Arme.Id == id))
+            {
+                Arme armeSamourai = samourai.Arme;
+                armeSamourai = null;
+                samourai.Arme = armeSamourai;
+            }
+
             db.Armes.Remove(arme);
             db.SaveChanges();
             return RedirectToAction("Index");
