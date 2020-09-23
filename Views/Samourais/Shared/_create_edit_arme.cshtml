@@ -1,0 +1,25 @@
+﻿@model samsam.Models.SamouraiVM
+
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Samourai.Arme, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @if (Model.Armes.Count == 0)
+        {
+            @Html.ActionLink("Create New", "Create", "Armes")
+        }
+        else
+        {
+            @Html.DropDownListFor(model => model.IdArme, Model.Armes.Select(x => new SelectListItem()
+                             {
+                                             Text = x.Nom,
+                                 Value = x.Id.ToString()
+                                         }),
+                                         "Choisissez une arme pour votre samourai",
+                                         new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Samourai.Nom, "", new { @class = "text-danger" })
+        }
+
+    </div>
+</div>
+

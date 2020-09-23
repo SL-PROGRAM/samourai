@@ -138,6 +138,10 @@
     <Compile Include="Migrations\202009230749366_samsam1.Designer.cs">
       <DependentUpon>202009230749366_samsam1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202009231022063_samsam2.cs" />
+    <Compile Include="Migrations\202009231022063_samsam2.Designer.cs">
+      <DependentUpon>202009231022063_samsam2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\SamouraiVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -193,6 +197,12 @@
     <Content Include="Views\ArtMartials\Details.cshtml" />
     <Content Include="Views\ArtMartials\Edit.cshtml" />
     <Content Include="Views\ArtMartials\Index.cshtml" />
+    <Content Include="Views\Shared\_bouton.cshtml" />
+    <Content Include="Views\Samourais\Shared\_create_edit_force.cshtml" />
+    <Content Include="Views\Samourais\Shared\_create_edit_nom.cshtml" />
+    <Content Include="Views\Samourais\Shared\_create_edit_artsMartials.cshtml" />
+    <Content Include="Views\Samourais\Shared\_create_edit_arme.cshtml" />
+    <Content Include="Views\Shared\_validation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -219,6 +229,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202009230749366_samsam1.resx">
       <DependentUpon>202009230749366_samsam1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202009231022063_samsam2.resx">
+      <DependentUpon>202009231022063_samsam2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

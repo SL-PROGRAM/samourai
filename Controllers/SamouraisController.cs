@@ -22,7 +22,18 @@ namespace samsam.Controllers
             List<Samourai> samourais = db.Samourais.ToList();
             foreach(Samourai samourai in samourais)
             {
-                samourai.Potentiel = (samourai.Force + samourai.Arme.Degats) * (samourai.ArtMartials.Count() + 1);
+                int degat = 0;
+                int artMartial = 0;
+                if(samourai.Arme != null)
+                {
+                    degat = samourai.Arme.Degats;
+                }
+                if(samourai.ArtMartials != null)
+                {
+                    artMartial = samourai.ArtMartials.Count();
+                }
+                
+                samourai.Potentiel = (samourai.Force + degat) * ( artMartial + 1);
             }
             return View(db.Samourais.ToList());
         }
@@ -132,6 +143,8 @@ namespace samsam.Controllers
                 samourai.Arme = arme;
                 samouraiVM.Samourai = samourai;
 
+                List<ArtMartial> artMartials = samourai.ArtMartials;
+
                 samouraiVM = UpdateSamouraiVM(samouraiVM);
                 samourai = samouraiVM.Samourai;
                 
@@ -191,6 +204,7 @@ namespace samsam.Controllers
 
         private List<ArtMartial> GetListArtMartials(SamouraiVM samouraiVM)
         {
+
             return db.ArtMartials.Where(x => samouraiVM.IdArtMartials.Contains(x.Id)).ToList();
         }
 
