@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BO;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -17,10 +18,19 @@ namespace samsam.Data
     
         public samsamContext() : base("name=samsamContext")
         {
+            
         }
 
         public System.Data.Entity.DbSet<BO.Samourai> Samourais { get; set; }
 
         public System.Data.Entity.DbSet<BO.Arme> Armes { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Samourai>().HasOptional(s => s.Arme).WithOptionalPrincipal();
+            modelBuilder.Entity<Samourai>().HasMany(s => s.ArtMartials).WithMany();
+        }
     }
+
+    
 }

@@ -40,11 +40,14 @@ namespace samsam.Controllers
         // GET: Samourais/Create
         public ActionResult Create()
         {
+            
             SamouraiVM samouraiVM = new SamouraiVM
             {
                 Samourai = new Samourai(),
-                Armes = db.Armes.Select(x => x).ToList(),
+                Armes = db.Armes.Where(x => !db.Samourais.Select(y => y.Arme.Id).ToList().Contains(x.Id)).ToList(),
             };
+
+
             
             return View(samouraiVM);
         }
