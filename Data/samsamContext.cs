@@ -30,6 +30,8 @@ namespace samsam.Data
             modelBuilder.Entity<Samourai>().HasOptional(s => s.Arme).WithOptionalPrincipal();
             modelBuilder.Entity<Samourai>().HasMany(s => s.ArtMartials).WithMany();
         }
+
+        public System.Data.Entity.DbSet<BO.ArtMartial> ArtMartials { get; set; }
     }
 
     

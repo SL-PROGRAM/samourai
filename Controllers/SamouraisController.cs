@@ -19,6 +19,11 @@ namespace samsam.Controllers
         // GET: Samourais
         public ActionResult Index()
         {
+            List<Samourai> samourais = db.Samourais.ToList();
+            foreach(Samourai samourai in samourais)
+            {
+                samourai.Potentiel = (samourai.Force + samourai.Arme.Degats) * (samourai.ArtMartials.Count() + 1);
+            }
             return View(db.Samourais.ToList());
         }
 
@@ -40,16 +45,23 @@ namespace samsam.Controllers
         // GET: Samourais/Create
         public ActionResult Create()
         {
-            
+
             SamouraiVM samouraiVM = new SamouraiVM
             {
                 Samourai = new Samourai(),
-                Armes = db.Armes.Where(x => !db.Samourais.Select(y => y.Arme.Id).ToList().Contains(x.Id)).ToList(),
-            };
+                Armes = GetArmesDisponible(),
+                ArtMartials = GetArtMartialsDisponible(),
+
+        };
 
 
-            
+
             return View(samouraiVM);
+        }
+
+        private List<Arme> GetArmesDisponible()
+        {
+            return db.Armes.Where(x => !db.Samourais.Select(y => y.Arme.Id).ToList().Contains(x.Id)).ToList();
         }
 
         // POST: Samourais/Create
@@ -59,9 +71,7 @@ namespace samsam.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(SamouraiVM samouraiVM)
         {
-
-            samouraiVM.Samourai.Arme = db.Armes.FirstOrDefault(x => x.Id == samouraiVM.IdArme);
-
+            samouraiVM = UpdateSamouraiVM(samouraiVM);
 
             if (ModelState.IsValid)
             {
@@ -69,9 +79,12 @@ namespace samsam.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            samouraiVM.Armes = db.Armes.Select(x => x).ToList();
+            samouraiVM = GetPropositionElementDisponible(samouraiVM);
+
             return View(samouraiVM);
         }
+
+       
 
         // GET: Samourais/Edit/5
         public ActionResult Edit(int? id)
@@ -91,8 +104,10 @@ namespace samsam.Controllers
             SamouraiVM samouraiVM = new SamouraiVM()
             {
                 Samourai = samourai,
-                Armes = db.Armes.Select(x => x).ToList(),
-            };
+                Armes = GetArmesDisponible(),
+                ArtMartials = GetArtMartialsDisponible()
+
+        };
             if(samourai.Arme != null)
             {
                 samouraiVM.IdArme = samourai.Arme.Id;
@@ -110,17 +125,27 @@ namespace samsam.Controllers
 
             if (ModelState.IsValid)
             {
+
                 Samourai samourai = db.Samourais.Find(samouraiVM.Samourai.Id);
                 Arme arme = samourai.Arme;
                 arme = null;
                 samourai.Arme = arme;
-                samourai.Arme = db.Armes.FirstOrDefault(x => x.Id == samouraiVM.IdArme);
+                samouraiVM.Samourai = samourai;
+
+                samouraiVM = UpdateSamouraiVM(samouraiVM);
+                samourai = samouraiVM.Samourai;
+                
                 db.Entry(samourai).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            samouraiVM.Armes = db.Armes.Select(x => x).ToList();
+            samouraiVM = GetPropositionElementDisponible(samouraiVM);
             return View(samouraiVM);
+        }
+
+        private List<ArtMartial> GetArtMartialsDisponible()
+        {
+            return db.ArtMartials.ToList();
         }
 
         // GET: Samourais/Delete/5
@@ -147,6 +172,31 @@ namespace samsam.Controllers
             db.Samourais.Remove(samourai);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        private SamouraiVM GetPropositionElementDisponible(SamouraiVM samouraiVM)
+        {
+            samouraiVM.Armes = GetArmesDisponible();
+            samouraiVM.ArtMartials = GetArtMartialsDisponible();
+            return samouraiVM;
+        }
+
+        private SamouraiVM UpdateSamouraiVM(SamouraiVM samouraiVM)
+        {
+            samouraiVM.Samourai.Arme = GetArmeSamourai(samouraiVM);
+            samouraiVM.Samourai.ArtMartials = GetListArtMartials(samouraiVM);
+
+            return samouraiVM;
+        }
+
+        private List<ArtMartial> GetListArtMartials(SamouraiVM samouraiVM)
+        {
+            return db.ArtMartials.Where(x => samouraiVM.IdArtMartials.Contains(x.Id)).ToList();
+        }
+
+        private Arme GetArmeSamourai(SamouraiVM samouraiVM)
+        {
+            return db.Armes.FirstOrDefault(x => x.Id == samouraiVM.IdArme);
         }
 
         protected override void Dispose(bool disposing)
